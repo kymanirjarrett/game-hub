@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPlayerId, getRoom, updateRoom } from "../../../logic/gameRoomApi";
+import { getPlayerId, getRoom, updateRoom } from "../../../utils/gameRoomApi";
 
 export function TicTacToeWaitingRoom({ roomId, onGameStart, onBackToLobby }) {
   const [gameState, setGameState] = useState(null);

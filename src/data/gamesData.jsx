@@ -1,4 +1,4 @@
-import HiddenPicturePreview from "../components/HiddenPicturePreview";
+import HiddenPicturePreview from "../pages/pokemon/components/HiddenPicturePreview";
 
 export const games = [
   {

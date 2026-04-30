@@ -1,2 +1,7 @@
-export { TicTacToeGame as TicTacToe } from "./tic-tac-toe/TicTacToeGame";
-export { default } from "./tic-tac-toe/TicTacToeGame";
+import { TicTacToeGame } from "./tic-tac-toe/TicTacToeGame";
+
+export function TicTacToe() {
+  return <TicTacToeGame />;
+}
+
+export default TicTacToe;

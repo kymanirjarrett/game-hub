@@ -1,4 +1,4 @@
-import { loadSettings } from "../logic/settings";
+import { loadSettings } from "./settings";
 
 export function applySavedTheme() {
   const settings = loadSettings();

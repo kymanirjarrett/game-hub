@@ -2,14 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameRoomHeader } from "../../components/game-room/GameRoomHeader";
 import { RoomPlayerBadge } from "../../components/game-room/RoomPlayerBadge";
-import { ScoreBar } from "../../components/pokemon-game/ScoreBar";
+import { ScoreBar } from "../pokemon/components/ScoreBar";
 import { useRoomPolling } from "../../hooks/useRoomPolling";
 import {
   abandonRoom,
   getPlayerId,
   getPlayerName,
   safePush,
-} from "../../logic/gameRoomApi";
+} from "../../utils/gameRoomApi";
 import { TicTacToeLobby } from "./components/TicTacToeLobby";
 import { TicTacToeBoard } from "./components/TicTacToeBoard";
 import { TicTacToeResult } from "./components/TicTacToeResult";

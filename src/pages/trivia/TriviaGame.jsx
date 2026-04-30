@@ -3,7 +3,7 @@ import { TriviaControls } from "./components/TriviaControls";
 import { TriviaQuestion } from "./components/TriviaQuestion";
 import { TriviaSummary } from "./components/TriviaSummary";
 import { useTriviaGame } from "./hooks/useTriviaGame";
-import "./trivia.css";
+import "../../styles/trivia.css";
 
 export function TriviaGame() {
   const {
