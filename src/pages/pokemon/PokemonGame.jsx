@@ -7,7 +7,7 @@ import { ScoreBar } from "./components/ScoreBar";
 import { TileBoard } from "./components/TileBoard";
 import { ActionPanel } from "./components/ActionPanel";
 import { RoundResult } from "./components/RoundResult";
-import { useRoomPolling } from "../../hooks/useRoomPolling";
+import { useRoomPolling } from "../../utils/useRoomPolling";
 import { useGameActions } from "./hooks/useGameActions";
 import { createGameState } from "./logic/pokemonLogic";
 import { fetchRandomPokemon } from "./utils/pokemonApi";

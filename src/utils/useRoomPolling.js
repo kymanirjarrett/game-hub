@@ -1,9 +1,7 @@
-import { useEffect, useRef } from "react";
-import { getRoom } from "../utils/gameRoomApi";
+import { useEffect } from "react";
+import { getRoom } from "./gameRoomApi";
 
 export function useRoomPolling({ roomId, enabled, onUpdate, onAbandoned }) {
-  const currentPokemonIdRef = useRef(null);
-
   useEffect(() => {
     if (!enabled || !roomId) return;
 

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GameRoomHeader } from "../../components/game-room/GameRoomHeader";
 import { RoomPlayerBadge } from "../../components/game-room/RoomPlayerBadge";
 import { ScoreBar } from "../pokemon/components/ScoreBar";
-import { useRoomPolling } from "../../hooks/useRoomPolling";
+import { useRoomPolling } from "../../utils/useRoomPolling";
 import {
   abandonRoom,
   getPlayerId,

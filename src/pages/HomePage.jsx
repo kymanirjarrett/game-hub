@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { games } from "../data/gamesData";
+import { games } from "./Games";
 import { avatars } from "../utils/avatars";
 import "../styles/HomePage.css";
 

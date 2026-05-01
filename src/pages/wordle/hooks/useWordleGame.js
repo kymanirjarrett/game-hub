@@ -4,7 +4,7 @@ import {
   WORD_LENGTH,
   isValidGuessWord,
   pickRandomAnswer,
-} from "../data/words";
+} from "../utils/wordleApi";
 import { evaluateGuess } from "../utils/evaluateGuess";
 import {
   DEFAULT_STATS,
