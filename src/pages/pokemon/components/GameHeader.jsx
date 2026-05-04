@@ -4,8 +4,8 @@ import {
   updateRoom,
   getRoom,
   getPlayerId,
-} from "../../logic/gameRoomApi";
-import { playerLeft } from "../../logic/pokemonGame";
+} from "../../../utils/gameRoomApi";
+import { playerLeft } from "../logic/pokemonLogic";
 
 export function GameHeader({ mode, roomId, game, onBackToLobby }) {
   const navigate = useNavigate();

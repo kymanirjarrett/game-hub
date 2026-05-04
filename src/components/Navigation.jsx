@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
-import "./Navigation.css";
+import "../styles/Navigation.css";
 
 export function Navigation() {
   const [hasName, setHasName] = useState(() =>

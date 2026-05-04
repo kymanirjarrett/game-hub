@@ -1,5 +1,3 @@
-// Handle localStorage for settings/highscores
-
 export function saveSettings(settings) {
   localStorage.setItem('game.settings', JSON.stringify(settings));
 }

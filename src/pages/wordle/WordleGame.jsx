@@ -3,7 +3,7 @@ import "animate.css";
 import { WordleBoard } from "./components/WordleBoard";
 import { WordleKeyboard } from "./components/WordleKeyboard";
 import { useWordleGame } from "./hooks/useWordleGame";
-import "./wordle.css";
+import "../../styles/wordle.css";
 
 function normalizeKeyboardInput(rawKey) {
   if (!rawKey) {

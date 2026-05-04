@@ -1,9 +1,7 @@
-import { useEffect, useRef } from "react";
-import { getRoom } from "../logic/gameRoomApi";
+import { useEffect } from "react";
+import { getRoom } from "./gameRoomApi";
 
 export function useRoomPolling({ roomId, enabled, onUpdate, onAbandoned }) {
-  const currentPokemonIdRef = useRef(null);
-
   useEffect(() => {
     if (!enabled || !roomId) return;
 
@@ -19,15 +17,7 @@ export function useRoomPolling({ roomId, enabled, onUpdate, onAbandoned }) {
 
         onUpdate(gameState);
 
-        if (
-          gameState.pokemon &&
-          gameState.pokemon.id !== currentPokemonIdRef.current
-        ) {
-          currentPokemonIdRef.current = gameState.pokemon.id;
-          console.log(
-            `🎮 Pokemon: ${gameState.pokemon.name} (ID: ${gameState.pokemon.id})`,
-          );
-        }
+
       } catch {}
     }, 1000);
 

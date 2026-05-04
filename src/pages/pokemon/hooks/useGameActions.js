@@ -2,9 +2,9 @@ import {
   revealTile,
   makeGuess,
   startNextRound,
-  fetchRandomPokemon,
-} from "../logic/pokemonGame";
-import { safePush } from "../logic/gameRoomApi";
+} from "../logic/pokemonLogic";
+import { fetchRandomPokemon } from "../utils/pokemonApi";
+import { safePush } from "../../../utils/gameRoomApi";
 
 export function useGameActions({
   game,

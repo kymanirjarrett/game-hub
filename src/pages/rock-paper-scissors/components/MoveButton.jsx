@@ -1,4 +1,4 @@
-import { capitalize } from "../../utils/string_formatting";
+import { capitalize } from "../../../utils/string_formatting";
 
 const moveEmoji = { rock: "✊", paper: "✋", scissors: "✌️" };
 

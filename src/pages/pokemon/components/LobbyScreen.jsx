@@ -6,8 +6,8 @@ import {
   updateRoom,
   getPlayerId,
   getPlayerName,
-} from "../../logic/gameRoomApi";
-import { fetchRandomPokemon } from "../../logic/pokemonGame";
+} from "../../../utils/gameRoomApi";
+import { fetchRandomPokemon } from "../utils/pokemonApi";
 
 const POLL_INTERVAL = 3000;
 const TILE_OPTIONS = [25, 36, 49, 64, 81];

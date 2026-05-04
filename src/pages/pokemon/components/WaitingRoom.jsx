@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRoom, updateRoom, getPlayerId } from "../../logic/gameRoomApi";
+import { getRoom, updateRoom, getPlayerId } from "../../../utils/gameRoomApi";
 
 export function WaitingRoom({ roomId, onGameStart, onBackToLobby }) {
   const [gameState, setGameState] = useState(null);

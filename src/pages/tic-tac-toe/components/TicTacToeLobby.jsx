@@ -6,7 +6,7 @@ import {
   getRoom,
   listRooms,
   updateRoom,
-} from "../../../logic/gameRoomApi";
+} from "../../../utils/gameRoomApi";
 import { createTicTacToeRoomState } from "../logic/ticTacToeRoom";
 
 const POLL_INTERVAL = 3000;
