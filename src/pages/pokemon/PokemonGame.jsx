@@ -72,9 +72,22 @@ export function PokemonGame() {
 
   const handleLocalPlay = async () => {
     setMode("local");
-    const p = await fetchRandomPokemon();
+    let p;
+    try {
+      p = await fetchRandomPokemon();
+    } catch (error) {
+      console.warn("Network error fetching Pokémon, using fallback.", error);
+      p = {
+        id: 25,
+        name: "pikachu",
+        image:
+          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+      };
+    }
     setPokemon(p);
-    console.log(`🎮 Pokemon: ${p.name} (ID: ${p.id})`);
+    if (import.meta.env.DEV) {
+      console.log(`🎮 Pokemon: ${p.name} (ID: ${p.id})`);
+    }
     setGame(
       createGameState(["Player 1", "Player 2"], {
         tileCount: 25,
