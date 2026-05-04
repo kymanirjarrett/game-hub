@@ -1,156 +1,181 @@
 # GameHub
 
-GameHub is a browser-based mini-game platform built with React and Vite. It combines multiple game experiences behind a single lobby, shared player identity, and a consistent visual system.
+A browser-based mini-game platform built with **React 19** and **Vite 7**. Five games share a single lobby, a persistent player profile, and a unified visual system.
+
+[![Deploy React Application](https://github.com/kymanirjarrett/game-hub/actions/workflows/deploy.yml/badge.svg)](https://github.com/kymanirjarrett/game-hub/actions/workflows/deploy.yml)
+
+> **Live demo:** [kymanirjarrett.github.io/game-hub](https://kymanirjarrett.github.io/game-hub)
+
+---
 
 ## Table of Contents
 
-- Overview
-- Features
-- Game Modes
-- Technology Stack
-- Architecture
-- Local Development
-- Testing
-- Deployment
-- Credits
-- Course Submission Appendix
+- [Overview](#overview)
+- [Games](#games)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [External APIs](#external-apis)
+- [Local Development](#local-development)
+- [Testing](#testing)
+- [Deployment](#deployment)
+
+---
 
 ## Overview
 
-GameHub provides a unified entry point for multiple games while keeping each game feature modular.
+GameHub provides a single entry point for a collection of browser games while keeping each game completely self-contained.
 
-Core goals:
+**Core design goals:**
 
-- Let players set a profile (name + avatar) once and use it across games
-- Keep game logic isolated by feature
-- Support both local and online-style room workflows where applicable
-- Maintain an arcade-style interface with preview panels and responsive layouts
+- Set a player profile (name + avatar) once; it persists across all games via `localStorage`
+- Each game feature owns its components, hooks, logic, and API calls inside its own folder
+- Shared room infrastructure (create / join / wait / play flows) is reused across multiplayer-style games
+- An arcade-style home screen renders interactive preview cards driven by a declarative game registry
 
-## Features
+---
 
-- Home lobby with game selection and interactive preview cards
-- Persistent player profile using browser storage
-- Game feature set:
-   - Rock Paper Scissors
-   - Wordle
-   - Tic Tac Toe
-   - Trivia
-   - Pokemon guessing game
-- Shared room components for multiplayer-style game flows
-- End-to-end test coverage for core user journeys
+## Games
 
-## Game Modes
+| Game | Route | Mode | Description |
+|---|---|---|---|
+| 🎮 Rock Paper Scissors | `/rps` | Single-player | Play against the computer; tracks session history and all-time high scores |
+| 📝 Wordle | `/wordle` | Single-player | Guess the five-letter word in six attempts |
+| ⬛ Tic Tac Toe | `/tic-tac-toe` | Local multiplayer | Pass-and-play with a room lobby and waiting room |
+| 🧠 Trivia | `/trivia` | Single-player | Timed multiple-choice questions pulled from the Open Trivia DB |
+| 🖼️ Pokémon | `/pokemon` | Local multiplayer | Progressively reveal a hidden Pokémon sprite; guess before your opponent |
 
-- Local single-device gameplay
-- Online room workflows for supported games (room create/join/wait/play flows)
+---
 
-## Technology Stack
+## Tech Stack
 
-- React
-- React Router
-- Vite
-- Playwright
-- ESLint
-- animate.css
+| Layer | Library / Tool |
+|---|---|
+| UI framework | React 19 |
+| Routing | React Router v6 |
+| Build tool | Vite 7 |
+| Styling | Vanilla CSS + animate.css + normalize.css |
+| E2E tests | Playwright |
+| Unit tests | Vitest + jsdom |
+| Linting | ESLint 9 (flat config) |
+| CI / CD | GitHub Actions → GitHub Pages |
 
-External APIs used:
-
-- PokeAPI
-- Open Trivia Database
-- Random Word API
-- DictionaryAPI
+---
 
 ## Architecture
 
-High-level structure:
-
-- Routing: [src/routes.jsx](src/routes.jsx)
-- Shared UI: [src/components](src/components)
-- Feature pages: [src/pages](src/pages)
-- Shared utilities: [src/utils](src/utils)
-- Styles: [src/styles](src/styles)
-
-Architecture skeleton diagram:
-
 ```text
-final-project-shinobi/
+game-hub/
 ├── src/
-│   ├── components/
+│   ├── components/                   # Shared reusable UI
 │   │   ├── game-room/
 │   │   │   ├── GameRoomHeader.jsx
 │   │   │   └── RoomPlayerBadge.jsx
-│   │   ├── Layout.jsx
+│   │   ├── AppLayout.jsx
 │   │   └── Navigation.jsx
-│   ├── pages/
+│   │
+│   ├── pages/                        # Feature pages (one folder per game)
+│   │   ├── Games.jsx                 # Declarative game registry (drives home screen)
 │   │   ├── HomePage.jsx
-│   │   ├── Pokemon.jsx
-│   │   ├── RockPaperScissors.jsx
-│   │   ├── TicTacToe.jsx
-│   │   ├── Trivia.jsx
-│   │   ├── Wordle.jsx
+│   │   │
+│   │   ├── preview/                  # Isolated hover-preview components
+│   │   │   ├── RockPaperScissorsPreview.jsx
+│   │   │   ├── TicTacToePreview.jsx
+│   │   │   ├── TriviaPreview.jsx
+│   │   │   └── WordlePreview.jsx
+│   │   │
 │   │   ├── pokemon/
-│   │   │   ├── components/
-│   │   │   └── hooks/
+│   │   │   ├── PokemonGame.jsx
+│   │   │   ├── components/           # ActionPanel, GameHeader, TileBoard, …
+│   │   │   ├── hooks/                # useGameActions, usePokemon, useTileReveal
+│   │   │   ├── logic/                # pokemonLogic.js
+│   │   │   └── utils/                # pokemonApi.js
+│   │   │
 │   │   ├── rock-paper-scissors/
-│   │   │   └── components/
+│   │   │   ├── RPSGame.jsx
+│   │   │   ├── components/           # GameHeader, GameSection, HighScoresSection, …
+│   │   │   └── logic/                # rpsLogic.js
+│   │   │
 │   │   ├── tic-tac-toe/
-│   │   │   ├── components/
-│   │   │   └── hooks/
+│   │   │   ├── TicTacToeGame.jsx
+│   │   │   ├── components/           # TicTacToeBoard, Lobby, WaitingRoom, Result
+│   │   │   └── logic/
+│   │   │
 │   │   ├── trivia/
-│   │   │   ├── components/
+│   │   │   ├── TriviaGame.jsx
+│   │   │   ├── components/           # TriviaQuestion, TriviaControls, TriviaSummary
 │   │   │   ├── hooks/
 │   │   │   └── utils/
+│   │   │
 │   │   └── wordle/
-│   │       ├── components/
-│   │       ├── hooks/
-│   │       └── utils/
-│   ├── hooks/
-│   │   └── useRoomPolling.js
-│   ├── utils/
-│   │   ├── avatars.js
-│   │   ├── gameRoomApi.js
-│   │   ├── settings.js
-│   │   ├── string_formatting.js
-│   │   └── theme.js
-│   ├── styles/
+│   │       ├── WordleGame.jsx
+│   │       ├── components/           # WordleBoard, WordleKeyboard
+│   │       ├── hooks/                # useWordleGame
+│   │       └── utils/                # wordleApi.js
+│   │
+│   ├── styles/                       # Global / cross-game stylesheets
+│   │   ├── GamePageHeader.css
 │   │   ├── HomePage.css
 │   │   ├── Navigation.css
 │   │   ├── PokemonGame.css
 │   │   ├── RPS.css
 │   │   ├── TicTacToe.css
-│   │   ├── Trivia.css
-│   │   └── Wordle.css
-│   ├── routes.jsx
+│   │   ├── trivia.css
+│   │   └── wordle.css
+│   │
+│   ├── utils/                        # Shared utilities & hooks
+│   │   ├── avatars.js
+│   │   ├── gameRoomApi.js
+│   │   ├── settings.js
+│   │   ├── string_formatting.js
+│   │   ├── theme.js
+│   │   └── useRoomPolling.js
+│   │
+│   ├── routes.jsx                    # Centralized React Router config
 │   └── main.jsx
-├── tests/
+│
+├── tests/                            # Playwright E2E test suite
 │   ├── hub.spec.ts
 │   ├── pokemon.spec.ts
+│   ├── rps.spec.ts
 │   ├── trivia.spec.ts
 │   ├── wordle.spec.ts
 │   └── test-helpers.ts
-├── package.json
+│
 ├── playwright.config.ts
-└── vite.config.js
+├── vite.config.js
+└── package.json
 ```
 
-Architecture notes:
+### Key architecture decisions
 
-- Routing is centralized in [src/routes.jsx](src/routes.jsx).
-- Feature pages live under [src/pages](src/pages).
-- Shared reusable UI lives under [src/components](src/components).
-- Shared utilities live under [src/utils](src/utils).
-- Game-specific assets, hooks, logic, and components are grouped inside each game feature folder when possible.
-- Styles are centralized under [src/styles](src/styles), with the exception of the global app styles.
-- The home screen uses a composition config to render the game list and hover previews.
-- Pokemon uses feature-local hooks and use-case logic for room polling, tile reveal, and game actions.
-- Wordle and Trivia each keep their own feature-local logic and stats storage helpers.
+| Decision | Detail |
+|---|---|
+| Centralized routing | All routes are declared in [`src/routes.jsx`](src/routes.jsx) |
+| Game registry | [`src/pages/Games.jsx`](src/pages/Games.jsx) exports a `games` array that drives the home screen card grid and preview animations — adding a new game requires only a new entry here |
+| Feature-local code | Each game owns its `components/`, `hooks/`, `logic/`, and `utils/` sub-folders; nothing leaks across games |
+| Shared room layer | `src/utils/gameRoomApi.js` and `src/utils/useRoomPolling.js` provide reusable room creation / polling without coupling to any one game |
+| Preview components | `src/pages/preview/` contains lightweight animated preview components, decoupled from full game logic |
+| Styles centralized | `src/styles/` holds cross-game stylesheets; per-game styles that are tightly coupled live alongside their feature |
+
+---
+
+## External APIs
+
+| API | Used by | Purpose |
+|---|---|---|
+| [PokeAPI](https://pokeapi.co) | Pokémon | Fetch random Gen 1 Pokémon sprites and names |
+| [Open Trivia Database](https://opentdb.com) | Trivia | Fetch categorized trivia questions |
+| [Random Word API](https://random-word-api.herokuapp.com) | Wordle | Fetch the daily target word |
+| [DictionaryAPI](https://dictionaryapi.dev) | Wordle | Validate that a guess is a real word |
+
+---
 
 ## Local Development
 
 ### Prerequisites
 
-- Node.js 20+
-- npm
+- **Node.js 20+**
+- **npm**
 
 ### Install
 
@@ -158,13 +183,17 @@ Architecture notes:
 npm install
 ```
 
-### Run (development)
+> `postinstall` automatically downloads the Chromium binary required by Playwright.
+
+### Run dev server
 
 ```bash
 npm run dev
 ```
 
-### Build + preview production locally
+Opens at [http://localhost:5173](http://localhost:5173) automatically.
+
+### Build & preview production build locally
 
 ```bash
 npm run build
@@ -177,28 +206,47 @@ npm run preview
 npm run lint
 ```
 
+---
+
 ## Testing
 
-Run the Playwright suite:
+The project uses **Playwright** for end-to-end tests and **Vitest** for unit tests.
+
+### Run E2E tests (Playwright)
 
 ```bash
 npm run test
 ```
 
-Current focus is end-to-end user flow validation for hub and key game journeys.
+Playwright builds the app, starts the preview server, then runs the full suite against Chromium.
+
+**Test coverage:**
+
+| Spec | Scenarios |
+|---|---|
+| `hub.spec.ts` | Home screen renders, game cards navigate correctly |
+| `rps.spec.ts` | Settings persist, game plays, history records, high scores update |
+| `trivia.spec.ts` | Question loads, answer selection, timer, summary screen |
+| `wordle.spec.ts` | Guess submission, correct/incorrect colour feedback |
+| `pokemon.spec.ts` | Lobby, room join, tile reveal flow |
+
+---
 
 ## Deployment
 
-This project is configured as a static Vite deployment with base path `/final-project-shinobi/` in [vite.config.js](vite.config.js).
+The app is deployed automatically to **GitHub Pages** on every push to `main` via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 
-Deployment checklist:
+The workflow:
+1. Checks out the repo
+2. Installs dependencies (skipping Playwright browser downloads in CI)
+3. Builds with `--base=/<repo-name>/` so asset paths resolve correctly on Pages
+4. Copies `dist/index.html` → `dist/404.html` as an SPA fallback
+5. Uploads and deploys the `dist/` folder
 
-1. Build the app.
+### Manual deployment to any static host
 
 ```bash
 npm run build
 ```
 
-2. Publish the generated [dist](dist) folder to your static host.
-3. Ensure host routing falls back to `index.html` for client-side routes.
-4. If using GitHub Pages, keep the repository path aligned with the configured Vite base path.
+Publish the generated `dist/` folder. Ensure your host serves `index.html` as the fallback for all routes.
