@@ -1,3 +1,13 @@
+function safeLocalStorageJSON(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw === null) return fallback;
+    return JSON.parse(raw) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 import { GameSection } from "./components/GameSection";
 import { HighScoresSection } from "./components/HighScoresSection";
 import { PlayerInfoCard } from "./components/PlayerInfoCard";
@@ -6,14 +16,14 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export function RPSGame() {
-  const settings = JSON.parse(localStorage.getItem("rpsSettings")) || {};
+  const settings = safeLocalStorageJSON("rpsSettings", {});
   const navigate = useNavigate();
   const playerName = sessionStorage.getItem("playerName") || "Player";
   const playerAvatar = sessionStorage.getItem("playerAvatar") || "assassin";
   const difficulty = settings?.difficulty || "normal";
 
   const [highScore, setHighScore] = useState(
-    () => JSON.parse(localStorage.getItem("rpsHighScore")) || null,
+    () => safeLocalStorageJSON("rpsHighScore", null),
   );
 
   const handleGameReset = (finalScore) => {
@@ -41,9 +51,13 @@ export function RPSGame() {
       <header>
         <h2>Rock Paper Scissors</h2>
         <nav>
-          <a onClick={() => navigate("/")} className="nav-link">
+          <button
+            type="button"
+            className="nav-link"
+            onClick={() => navigate("/")}
+          >
             ← Back to Lobby
-          </a>
+          </button>
         </nav>
       </header>
       <PlayerInfoCard playerName={playerName} playerAvatar={playerAvatar} />
